@@ -74,15 +74,21 @@ Every node in your personal subgraph has a **Tier (Depth Level)**:
 - **Tier 2 (Specific Facet)**: Sub-specialties & active pursuits (e.g., `Doubles Tennis`, `Sourdough Baking`, `Kubernetes`).
 - **Tier 3 (Personal Detail / Attributes)**: Granular metrics, ratings, schedules, and personal notes (e.g., `Rating: 3.3`, `Seeking Doubles Partner`, `Organizer since 2025`).
 
-### 3.2 Preset Circles (Baseline Visibility)
-You assign contacts or card-exchange links to a **Circle** (or **Social Group**), which sets the baseline Tier they can see before any matching:
-1. **Public / Stranger** — Tier 1 nodes marked public.
-2. **Networking / Conference** — Full `Professional` & `Tech` subgraphs; Tier 1 `Hobbies`.
-3. **Friends / Social** — Tier 2 across `Hobbies`, `Social Groups`, and `Projects`.
-4. **Custom Social Group Preset** (e.g., *AWC Zurich* or *GCDG*) — Custom per-category tier rules tailored to that community.
-5. **Inner Circle** — Full subgraph (Tiers 1–3).
+### 3.2 Combinable Circles (Multi-Select Active Exposure)
+Instead of a single rigid preset, Circles in Radius are **composable toggles**. When you go to an event or share your card, you can enable **multiple circles at once** (the union of their permissions applies):
+- **Public Circle** — Exposes Tier 1 `Hobbies` & general `Locations` (with `unlockOnMatch: true` waiting on Tier 2/3 nodes like `Doubles > Rating 3.3`).
+- **Professional Circle** — Exposes Tiers 1–3 of `Professional`, `Tech Stack`, `Speaking / Projects`, and professional `SocialGroups`.
+- **Friends / Social Circle** — Exposes Tiers 1–2 of `Hobbies`, `Personal Projects`, and social `SocialGroups`.
+- **Inner Circle** — Full subgraph (Tiers 1–3).
 
-### 3.3 Match-Based Progressive Disclosure ("Unlock Radius on Match")
+> **Example:** At a tech meetup, Emily toggles ON **`Public` + `Professional`**. Everyone she meets sees her full professional subgraph *plus* her Tier 1 hobbies — and if someone *also* plays Tennis, `unlockOnMatch` automatically reveals her Tier 2/3 Tennis details!
+
+### 3.3 "Event Mode" & Beyond-Group Highlighting (Signal vs. Noise)
+When you activate an **Event Session** (e.g., `GDG Cloud Zurich — Nov 5, 2026`, linked to `[GDG Cloud Zurich]`):
+1. **Signal-to-Noise Filtering ("Beyond-Group Highlights")**: At a `GDG Cloud Zurich` event, matching on `Google Cloud` is expected baseline context. Radius automatically elevates and highlights **matches outside the event's primary domain** (e.g., highlighting that **Anna** matches with you on `Hobbies > Tennis > Doubles`).
+2. **Automatic Event Tagging (`EventSession`)**: Any contact you **exchange cards with** (new contact like **Graham**) OR **log a quick interaction with** (existing contact like **Anna**) while Event Mode is active is automatically tagged with `GDG Cloud Zurich — Nov 5, 2026` in your CRM timeline.
+
+### 3.4 Match-Based Progressive Disclosure ("Unlock Radius on Match")
 Even if you exchange a **Public** card capped at Tier 1 (`Tennis`), nodes with `unlockOnMatch: true` reveal their connected **1-hop deeper neighborhood** whenever a match (0-hop exact or 1-hop fuzzy) is detected:
 
 1. **Baseline Handshake**: Alice and Bob exchange Public H2H cards. Only Tier 1 (`[Tennis]`) is initially visible.
@@ -106,28 +112,68 @@ When two H2H cards meet, the Radius Graph Engine evaluates connections across fo
 
 ### Attribute & Intent Modifiers
 - **Numeric Proximity Bonus**: On shared nodes like `[Doubles Tennis]`, close numeric attributes (`Rating: 3.3` and `Rating: 3.5`) add a compatibility bonus.
-- **Complementary / Actionable Intent Bonus**:
+- **Complementary & Peer Intent Bonus**:
   - `seeking_partner` + `seeking_partner` (e.g., Tennis Doubles partner) -> **Actionable Match badge!**
   - `offering_mentorship` + `seeking_mentorship` -> **Complementary Match badge!**
+  - `mutual_learning` + `mutual_learning` (e.g., co-exploring a technology or speaking together) -> **Mutual Growth badge!**
+  - `opportunity_sharing` / `amplifying` (e.g., raising CFPs, leadership roles, or project opportunities for each other) -> **Opportunity Amplifier badge!**
 
 ---
 
-## 5. Personal CRM Features
+## 5. Personal CRM & Community Curation Features
 
 Once you exchange H2H cards with someone, they are saved in your **Radius CRM**:
 - **Interactive Subgraph & Venn View**: Inspect a contact's unlocked vector graph, highlighted by **Exact Overlaps**, **1-Hop Fuzzy Connections**, and **Shared Social Groups**.
-- **Conversation Starters & Bridge Prompts**: Auto-generated prompts from graph paths (e.g., *"You both play Doubles Tennis (3.3 vs 3.5) and both live in Zurich"* or *"Invite Maya to American Women's Club Zurich — she just moved to Zurich and shares 3 hobbies"*).
-- **Social Group Hub**: View your groups (*American Women's Club Zurich*, *Google Cloud Developer Groups*, etc.), see all CRM contacts in each group, and preview what your H2H card exposes to that group.
-- **Interaction & Context Log**: Record where/when you met, event tags, private notes, and follow-up reminders.
+- **Multi-Facet Graph Cohort Search ("Event Organizer Query")**: Filter your CRM by intersecting multiple graph dimensions and 1-hop radii — for example: `[Women in Tech]` ∩ `[Software Development (0–1 hops)]` ∩ `[Berlin Area (0–1 hops)]`.
+- **Warm Outreach Dossier ("Authentic Touchpoints")**: When reaching out to a cohort, Radius surfaces a per-person context card showing:
+  1. **Shared Past Events** (e.g., *"You both attended Women Techmakers Summit 2026 & GDG Cloud"* + your interaction notes).
+  2. **Personal Common Ground** (shared hobbies, mutual learning vectors, and personal topics).
+  3. **Opportunity & Mutual Learning Prompts** (ways to support each other or introduce them to other invitees).
+- **Selective Next-Level Unlocking ("Deepen Connection")**: With existing contacts (e.g., client or partner teams like **Deloitte**), selectively unlock deeper Tier 2/3 nodes — such as specific professional skills (`Data Analytics`) or personal rapport vectors (`Travel & Vacations -> Milan`) — as the working relationship deepens.
+- **Manual / "Shadow" H2H Cards & Claim Flow**: When you meet someone who doesn't have Radius yet, create a **Manual H2H Card** right inside your CRM (capturing their vectors, organization, and meeting context) and share a **"Download & Claim Your H2H Card"** link/QR. Once they join Radius, their manual card seamlessly links and upgrades into a live two-way H2H connection.
+- **Social Group & Organization Hub**: View your communities (*American Women's Club Zurich*, *Google Cloud Developer Groups*, *Women in Tech*) and organizations/accounts (*Deloitte*), see all CRM contacts in each, and preview what your H2H card exposes.
+- **Interaction & Context Log**: Record where/when you met, event/meeting tags, private notes, and follow-up reminders.
 
 ---
 
-## 6. Card Exchange & "Radius" Proximity Roadmap
+## 6. Core User Stories & Reference Workflows
+
+### User Story 1: Event Mode, Beyond-Group Highlights & Auto-Tagging
+**Scenario:**
+1. **Preparation & Multi-Circle Activation**: Emily has her H2H card prepared and heads to **Google Developer Group (GDG) Cloud Zurich** on Thursday, November 5th. She activates **Event Mode (`GDG Cloud Zurich Nov 5th`)** and toggles ON both her **`Public`** and **`Professional`** Circles.
+2. **Reception Prep & "Beyond-Group" Highlighting**: While at the reception, Emily opens the Event Reception view to see the H2H cards of her collected contacts in this group. Because matching on `GDG Cloud` is expected for everyone at the event, Radius specifically highlights **attributes that match *beyond* the GDG Cloud group**.
+3. **Actionable Icebreaker (Existing Contact — Anna)**: Emily sees **Anna's** card with a highlighted cross-vector match on **`Tennis`** (`Hobbies -> Tennis -> Doubles`). She immediately knows to walk over to Anna, ask her about Tennis, and tap **"Log Interaction"** on Anna's card.
+4. **New Card Exchange (New Contact — Graham)**: Emily meets **Graham** for the first time and exchanges H2H cards with him under her active `Public + Professional` circles.
+5. **Automatic Event Tagging**: Because Emily interacted with **Anna** and exchanged cards with **Graham** while the `GDG Cloud Zurich Nov 5th` Event Mode was active, **both Graham and Anna are automatically tagged with `GDG Cloud Zurich Nov 5th`** in Emily's CRM timeline.
+
+### User Story 2: Curating a High-Trust Community Event & Warm Outreach (Berlin Women in Tech)
+**Scenario:**
+1. **Multi-Facet Graph Cohort Discovery**: Emily is organizing a developer event for **Women in Technology** in **Berlin**. She runs a graph query across her CRM for contacts matching:
+   - **Community / Identity**: `Women in Tech` / female developers
+   - **Role / Domain (0–1 Hop)**: `[Software Development]` (matching Frontend, Backend, Cloud, AI/ML, DevOps, etc.)
+   - **Location Radius (0–1 Hop)**: `[Berlin]` and the surrounding Berlin metro area (e.g., Potsdam / frequent Berlin travelers).
+2. **Warm, Personal Context Synthesis (No Cold Blasts)**: For each matched contact, Radius generates a **Warm Outreach Card** that pulls together:
+   - **Shared Event History**: Past events they attended together (e.g., *"Met at Cloud Next / WTM Berlin — talked about distributed systems"*).
+   - **Personal Vector Overlap**: What they have in common personally or professionally (e.g., shared hobbies like running or baking, or shared tech interests).
+   - **Mutual Learning & Opportunity Raising**: Highlights where they can learn from each other or elevate each other (e.g., inviting her to co-present, sharing a CFP opportunity, or connecting her with another woman developer attending the Berlin event).
+3. **Authentic Relationship Building**: Emily sends deeply personal, thoughtful invitations referencing their real shared history and common ground — fostering genuine friendship, peer learning, and mutual opportunity-raising rather than transactional networking.
+
+### User Story 3: Deeper Professional Meetings, Selective Unlocking & Non-Radius Contacts (Deloitte Meeting)
+**Scenario:**
+1. **Office Meeting Context (`Deloitte`)**: Emily is in the office next week meeting with the team from **Deloitte**. She activates a meeting context for **`Deloitte Office Meeting`** (linked to the `[Deloitte]` organization node).
+2. **Unlocking Next Levels with Existing Contacts**: Several Deloitte attendees are already in Emily's CRM from earlier introductions. To deepen both professional collaboration and personal rapport during this in-person session, Emily selectively unlocks the next tiers of connection with them — specifically exposing deeper professional nodes like **`Data Analytics`** skills and personal rapport vectors like **`Vacations in Milan`** (`Travel -> Italy -> Milan`), and capturing the newly unlocked overlaps.
+3. **Meeting Someone Without Radius (Manual "Shadow" H2H Card)**: Emily meets a new Deloitte team member who doesn't have the Radius app yet. She recommends they download Radius, and right in the moment creates a **Manual H2H Card** for them in her CRM (adding the vectors she learned in conversation, like `Data Analytics` or `Milan`).
+4. **Auto-Tagging & Future Claim Link**: Because Emily is in the active meeting mode, this new manual H2H card (along with the existing Deloitte contacts she interacted with) is **automatically tagged with `Deloitte` and `Deloitte Office Meeting`**. Emily can also send the new contact an invite link/QR so that when they download Radius, they can **claim and sync** their card into a live H2H connection!
+
+---
+
+## 7. Card Exchange & "Radius" Proximity Roadmap
 
 ### Phase 1: Web App, Graph Engine, `.h2h.json`, Links & QR Codes (MVP)
 - **My H2H Graph Builder**: Visual & structured editor to build your personal vector graph, attach attributes (`Rating: 3.3`), join/create Social Groups (*American Women's Club Zurich*, *Google Cloud Developer Groups*), and configure Circle & Group visibility rules.
-- **Live H2H Handshake & Progressive Unlock Simulator**: Put your H2H card next to another person's card, pick an exchange Circle or Social Group context, and watch the graph progressively unlock Tier 1 -> Tier 2 -> Tier 3 nodes and highlight 0-hop & 1-hop matches.
-- **Personal CRM & Social Groups Directory**: Manage contacts, filter by graph nodes or social groups, log interactions, and export/import `.h2h.json` cards or QR codes.
+- **Event Mode & Reception View**: Start an active event session (e.g., *GDG Cloud Zurich Nov 5th*), enable multiple Circles at once (`Public + Professional`), view existing contacts with **Beyond-Group Highlights** (like Anna's Tennis match), and auto-tag everyone you interact with or exchange cards with during the event.
+- **Live H2H Handshake & Progressive Unlock Simulator**: Put your H2H card next to another person's card, pick active Circles + Event context, and watch the graph progressively unlock Tier 1 -> Tier 2 -> Tier 3 nodes and highlight 0-hop & 1-hop matches.
+- **Personal CRM & Social Groups Directory**: Manage contacts, filter by graph nodes, event tags, or social groups, log interactions, and export/import `.h2h.json` cards or QR codes.
 
 ### Phase 2: Ambient "In Your Radius" Proximity Sync (Future)
 - **Active Radius Mode**: Mobile/PWA background discovery via BLE / Ultra-Wideband / local P2P.
@@ -135,11 +181,11 @@ Once you exchange H2H cards with someone, they are saved in your **Radius CRM**:
 
 ---
 
-## 7. Tech Stack & Graph Database Architecture
+## 8. Tech Stack & Graph Database Architecture
 
 - **Framework**: Next.js (App Router) + React + TypeScript + Tailwind CSS
 - **Graph Storage & Query Engine**:
-  - Embedded persistent **Graph Database layer backed by SQLite** (`nodes`, `edges`, `user_vectors`, `social_groups`, `contacts`, `interactions`) with an in-memory/SQL **Graph Traversal & Hop-Radius Engine** (supporting multi-parent DAGs, weighted `SIMILAR_TO` edges, shortest-path hop calculation, and progressive disclosure evaluation).
+  - Embedded persistent **Graph Database layer backed by SQLite** (`nodes`, `edges`, `user_vectors`, `social_groups`, `events`, `contacts`, `interactions`) with an in-memory/SQL **Graph Traversal & Hop-Radius Engine** (supporting multi-parent DAGs, weighted `SIMILAR_TO` edges, shortest-path hop calculation, beyond-group signal filtering, and progressive disclosure evaluation).
 - **Visualization**: Interactive SVG/Canvas Force-Directed & Hierarchical Graph Visualizer for inspecting your H2H graph and two-person overlap subgraphs.
 
 ### Draft `.h2h.json` Graph Schema Example (`v0.2`)
@@ -155,8 +201,13 @@ Once you exchange H2H cards with someone, they are saved in your **Radius CRM**:
     "location": "Zurich, Switzerland"
   },
   "exchangeContext": {
-    "circlePreset": "public",
-    "activeGroupScope": null
+    "activeCircles": ["public", "professional"],
+    "activeEvent": {
+      "eventId": "evt_gdg_zurich_2026_11_05",
+      "label": "GDG Cloud Zurich Nov 5th",
+      "groupId": "grp_gcdg",
+      "date": "2026-11-05"
+    }
   },
   "socialGroups": [
     {
