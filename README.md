@@ -2,51 +2,54 @@
 
 **A Personal CRM & Human-to-Human (`H2H`) Card Protocol powered by a Core Graph Database and Hop-Radius Progressive Disclosure.**
 
-Inspired by the Agent-to-Agent (`agent.json`) protocol, **Radius** replaces flat business cards and static social profiles with structured **H2H Cards (`.h2h.json`)**. People define personal **Description Vector Subgraphs** — connected nodes of hobbies, skills, goals, locations, and real-world **Social Groups** — and control exactly what gets exposed to different circles, automatically unlocking deeper nodes when two cards share common ground.
+Inspired by the Agent-to-Agent (`agent.json`) protocol, **Radius** replaces flat business cards and static social profiles with structured **H2H Cards (`.h2h.json`)**. People define personal **Description Vector Subgraphs** — connected nodes of hobbies, skills, goals, locations, organizations, and real-world **Social Groups** — and control what gets exposed to different circles, automatically unlocking deeper nodes when two cards share common ground.
 
 ---
 
-## ✨ Key Concepts
+## ✨ Key Capabilities
 
-### 1. The H2H Card (`.h2h.json`)
-Your portable human identity & vector subgraph:
+### 1. The H2H Card (`.h2h.json`) & Composable Circles
 - **Identity Header**: Name, handle, headline, location, and contact channels.
-- **Vector Subgraph**: Multi-tiered nodes (`Concept`, `SocialGroup`, `Location`, `Detail`) connected by typed, weighted edges (`PART_OF`, `SIMILAR_TO`, `LOCATED_IN`, `FOCUSES_ON`).
-- **Exposure & Progressive Disclosure Policy**: Circle presets + match-triggered hop unlocking.
+- **Vector Subgraph**: Multi-tiered nodes (`Concept`, `SocialGroup`, `Organization`, `Location`, `Detail`) connected by typed, weighted edges (`PART_OF`, `SIMILAR_TO`, `LOCATED_IN`, `FOCUSES_ON`).
+- **Composable Circles**: Toggle multiple circles ON at once (e.g., `Public + Professional`) and selectively unlock deeper tiers (`Data Analytics`, `Vacations in Milan`) or use `unlockOnMatch: true` to progressively reveal details (like `Tennis -> Doubles -> Rating: 3.3`).
 
-### 2. Core Graph Database & Hop-Radius Matching
-Real life isn't a strict hierarchy (`Trail Running` belongs to both `Running` and `Sports & Outdoors`, and is a 1-hop neighbor to `Ultramarathons`). Radius models concepts in a graph:
-- **0-Hop Exact Match**: Both cards link to `[Doubles Tennis]` or `[American Women's Club Zurich]`.
-- **1-Hop Fuzzy / Sibling Match**: One card links to `[Trail Running]` and the other to `[Ultramarathons]` (`SIMILAR_TO` edge).
-- **1-Hop Community Bridge**: One person is a member of `[Google Cloud Developer Groups]` (`FOCUSES_ON -> [Google Cloud]`) and meets someone with `[Google Cloud]` on their card.
+### 2. Event Mode & "Beyond-Group" Signal Highlighting
+- Activate an **Event or Meeting Session** (e.g., *GDG Cloud Zurich Nov 5th* or *Deloitte Office Meeting*).
+- **Beyond-Group Highlights**: At a GDG Cloud event, matching on `Google Cloud` is expected noise. Radius elevates matches *beyond* the event's baseline group — so you immediately see that **Anna** matches with you on **Doubles Tennis**.
+- **Auto-Tagging**: Both existing contacts you check in with and new contacts you exchange cards with during an active session are automatically tagged with that event.
 
-### 3. Progressive Disclosure ("Unlock on Match")
-Share safely with strangers without missing deep connections:
-- Expose only **Tier 1** (`[Tennis]`) to a `Public` circle.
-- If the person you meet *also* has `[Tennis]`, Radius automatically unlocks **Tier 2** (`[Doubles Tennis]`).
-- If you both match on `[Doubles Tennis]`, Radius unlocks **Tier 3 Details** (`USTA Rating: 3.3`, `Schedule: Weekend Mornings`, `Intent: Seeking Partner`).
+### 3. Community Curation, Cohort Graph Search & Warm Outreach
+- **Multi-Facet Graph Cohort Search**: Query your CRM across intersecting graph dimensions and 1-hop radii (e.g., `Women in Tech` ∩ `Software Development (0–1 hops)` ∩ `Berlin Area (0–1 hops)`).
+- **Warm Outreach Dossiers & Peer Introductions**: Automatically synthesize shared past events, personal common ground, and **mutual learning / opportunity-raising** prompts — plus suggest which attendees should meet *each other*.
 
-### 4. First-Class Social Groups
-Real-world communities like **American Women's Club Zurich** or **Google Cloud Developer Groups** are first-class nodes in the graph:
-- Match with fellow members (`0-hop`) or discover people to invite (`1-hop bridge`).
-- Use **Group-Scoped Card Presets** at community events to automatically expose the facets of your life most relevant to that group.
+### 4. Manual ("Shadow") H2H Cards for Non-Radius Contacts
+- Meet someone who doesn't have Radius yet? Create a **Manual H2H Card** in seconds right inside your active meeting/event mode.
+- Their vectors immediately participate in your graph searches and matching, and you can send them a **Claim Link / QR** so their card upgrades into a live two-way H2H connection when they download the app.
 
 ---
 
-## 📄 Specification
+## 📖 Core User Stories (from [SPEC.md](./SPEC.md))
+
+1. **User Story #1 — Event Mode & Beyond-Group Highlights (`GDG Cloud Zurich Nov 5th`)**: Emily enables her `Public + Professional` circles at a GDG Cloud Zurich reception, spots a highlighted `Tennis` match on her existing contact **Anna**, exchanges cards with a new contact **Graham**, and both are auto-tagged with `GDG Cloud Zurich Nov 5th`.
+2. **User Story #2 — Curating a Community Event & Warm Outreach (`Berlin Women in Tech`)**: Emily queries her graph for female developers within 1 hop of Berlin, reviews each contact's shared event history and personal common ground, and sends warm, personal invitations focused on authentic friendship, mutual learning, and raising opportunities for each other.
+3. **User Story #3 — Deeper Professional Meetings & Manual H2H Cards (`Deloitte Office Meeting`)**: Emily unlocks next-tier nodes (`Data Analytics` skills and `Vacations in Milan`) with her existing Deloitte contacts, and creates a manual H2H card (auto-tagged with `Deloitte` and the meeting) for a new team member who doesn't have Radius yet.
+
+---
+
+## 📄 Full Specification
 
 Read the full product & technical specification in [**SPEC.md**](./SPEC.md).
 
 ---
 
-## 🛠️ Planned Tech Stack
+## 🛠️ Tech Stack
 
 - **Frontend & App Framework**: Next.js (App Router), React, TypeScript, Tailwind CSS
-- **Graph Engine & Storage**: SQLite-backed Graph Schema (`nodes`, `edges`, `user_vectors`, `social_groups`, `contacts`, `interactions`) + Hop-Radius Traversal Engine
+- **Graph Engine & Storage**: SQLite-backed Core Graph Database (`nodes`, `edges`, `user_vectors`, `social_groups`, `events`, `contacts`, `interactions`) + Hop-Radius Traversal Engine
 - **Protocol**: `.h2h.json` open schema (`v0.2`) with shareable links & QR codes (Phase 1) and proximity/BLE discovery (Phase 2)
 
 ---
 
 ## 🤝 Contributing
 
-We welcome collaborators! Please read [**CONTRIBUTING.md**](./CONTRIBUTING.md) for details on our workflow, how to propose changes to the `.h2h.json` schema or graph matching engine, and how to run the project locally.
+We welcome collaborators! Please read [**CONTRIBUTING.md**](./CONTRIBUTING.md) for details on our workflow and how to get involved.
