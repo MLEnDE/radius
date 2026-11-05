@@ -17,6 +17,17 @@ dist/
 *.sqlite
 *.sqlite3
 
+# Private Personal Network Vaults (never commit plaintext personal data)
+*.local.json
+private-vault*
+.vault-passcode*
+
+# Python
+__pycache__/
+*.pyc
+
+
+
 # Environment variables
 .env
 .env*.local

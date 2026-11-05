@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content" />
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#090d16" />
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#090d16" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>Radius — H2H Card & Event Mode</title>
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png" />
+  <link rel="apple-touch-icon" href="./icon-192.png" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+      --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+      --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+    }
+
+    html {
+      -webkit-tap-highlight-color: transparent;
+      -webkit-text-size-adjust: 100%;
+      overscroll-behavior-y: none;
+      background-color: #090d16;
+    }
+
+    body {
+      background-color: #090d16;
+      color: #f8fafc;
+      font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    }
+
+    .tabular-nums {
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Prevent auto-zoom on mobile inputs without disabling pinch-zoom (mobile-native rule #4) */
+    @media (pointer: coarse) {
+      input, textarea, select {
+        font-size: 16px !important;
+      }
+    }
+
+    /* Responsive press feedback & zero 300ms tap delay (emil-design-eng & mobile-native rule #5 & #8) */
+    button, a, [role="button"], .pressable {
+      touch-action: manipulation;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-touch-callout: none;
+      transition: transform 140ms var(--ease-out), opacity 140ms var(--ease-out), background-color 140ms var(--ease-out), border-color 140ms var(--ease-out);
+    }
+
+    button:active, [role="button"]:active, .pressable:active {
+      transform: scale(0.97);
+    }
+
+    /* Gate hover effects strictly to fine pointers so touch never sticks (mobile-native rule #1) */
+    @media (hover: hover) and (pointer: fine) {
+      .hover-lift:hover {
+        background-color: rgba(255, 255, 255, 0.06);
+      }
+    }
+
+    /* Natural entrance starting from scale(0.96) + opacity 0 (emil-design-eng: never animate from scale(0)) */
+    @keyframes enterCard {
+      from {
+        opacity: 0;
+        transform: scale(0.96) translateY(4px);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    @keyframes enterSheet {
+      from {
+        opacity: 0;
+        transform: translateY(100%);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animate-enter {
+      animation: enterCard 200ms var(--ease-out) both;
+    }
+
+    .animate-sheet {
+      animation: enterSheet 260ms var(--ease-drawer) both;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .animate-enter, .animate-sheet {
+        animation: none;
+      }
+      button, a, [role="button"], .pressable {
+        transition: opacity 120ms ease;
+      }
+      button:active, [role="button"]:active, .pressable:active {
+        transform: none;
+      }
+    }
+
+    .safe-top {
+      padding-top: max(0.75rem, env(safe-area-inset-top, 0px));
+    }
+
+    .safe-bottom {
+      padding-bottom: max(0.5rem, env(safe-area-inset-bottom, 0px));
+    }
+
+    .safe-sheet {
+      padding-bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px));
+    }
+
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="antialiased selection:bg-teal-400 selection:text-slate-950">
+  <div id="toast-container"></div>
+  <div id="app-root"></div>
+
+  <script src="./src/qr.js?v=20261105c"></script>
+  <script src="./src/vault.js?v=20261105c"></script>
+  <script src="./src/graph-engine.js?v=20261105c"></script>
+  <script src="./src/app.js?v=20261105c"></script>
+  <script>
+    if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+      navigator.serviceWorker.register('./sw.js?v=20261105c').then((reg) => {
+        reg.update().catch(() => {});
+      }).catch(() => {});
+    }
+  </script>
+</body>
+</html>
